@@ -12,13 +12,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, Ref, inject } from 'vue';
 import { Player } from '../features/player/playerLogic.ts';
 
 export default defineComponent({
   name: 'GameWindow',
   setup() {
-    const player = ref(new Player(0, 0));
+    const player = inject('player') as Ref<Player>;
 
     function handleKeydown(event: KeyboardEvent) {
       switch (event.key) {
@@ -35,10 +35,12 @@ export default defineComponent({
           player.value.moveRight();
           break;
       }
+
+      player.value.hasScored(1);
     }
 
     function isPlayerAt(x: number, y: number): boolean {
-      return player.value.x === x && player.value.y === y;
+      return player.value.posX === x && player.value.posY === y;
     }
 
     return {
@@ -50,7 +52,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$cell-lenght: 100px;
+$cell-lenght: 80px;
 
 .game-window {
   display: flex;

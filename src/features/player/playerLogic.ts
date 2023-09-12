@@ -1,10 +1,12 @@
 export class Player {
   posX: number;
   posY: number;
+  score: number;
 
   constructor(initialX: number, initialY: number) {
     this.posX = initialX;
     this.posY = initialY;
+    this.score = 0;
   }
 
   moveUp() {
@@ -22,5 +24,8 @@ export class Player {
   moveRight() {
     this.posX = Math.min(8, this.posX + 1);
   }
+
+  hasScored(points: number) {
+    this.score += points;
+  }  
 }
-  
