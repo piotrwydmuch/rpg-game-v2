@@ -5,6 +5,10 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "baseUrl": "./", // ważne, aby ustawić bazowy URL
+    "paths": {
+      "@features/*": ["src/features/*"]
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",

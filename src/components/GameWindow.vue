@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, Ref, inject } from 'vue';
-import { Player } from '../features/player/playerLogic.ts';
+import { Player } from '@features/player/playerLogic.ts';
 
 export default defineComponent({
   name: 'GameWindow',
