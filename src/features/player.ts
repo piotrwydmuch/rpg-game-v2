@@ -1,4 +1,4 @@
-import { MAP_SIZE } from "@features/map.ts"
+import { MAP_SIZE } from '@features/map.ts';
 
 export class Player {
   posX: number;
@@ -29,5 +29,5 @@ export class Player {
 
   hasScored(points: number) {
     this.score += points;
-  }  
+  }
 }

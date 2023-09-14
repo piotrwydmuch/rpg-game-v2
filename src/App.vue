@@ -9,17 +9,16 @@
   </div>
 </template>
 
-
 <script lang="ts">
-import GameMap from './components/GameMap.vue'
-import SideBar from './components/SideBar.vue'
+import GameMap from './components/GameMap.vue';
+import SideBar from './components/SideBar.vue';
 import { defineComponent, ref, provide } from 'vue';
 import { Player } from '@features/player.ts';
 
 export default defineComponent({
   components: {
     GameMap,
-    SideBar
+    SideBar,
   },
   setup() {
     const player = ref(new Player(0, 0));
@@ -28,7 +27,7 @@ export default defineComponent({
     provide('player', player);
 
     return {};
-  }
+  },
 });
 </script>
 
@@ -42,6 +41,5 @@ main {
   display: flex;
   justify-content: center;
 }
-
 </style>
 @features/player/player

@@ -1,12 +1,9 @@
-
 <template>
-  <div class="sidebar">
-    score: {{ player.score }}
-  </div>
+  <div class="sidebar">score: {{ player.score }}</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, Ref} from 'vue';
+import { defineComponent, inject, Ref } from 'vue';
 import { Player } from '@features/player.ts';
 
 export default defineComponent({
@@ -15,13 +12,11 @@ export default defineComponent({
     const player = inject('player') as Ref<Player>;
 
     return {
-      player
+      player,
     };
-  }
+  },
 });
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
 @features/player/player

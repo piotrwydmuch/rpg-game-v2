@@ -1,19 +1,23 @@
-
 <template>
-  <div 
+  <div
     tabindex="0"
-    class="game-map" 
-    @keydown.up="handleKeydownUp" 
-    @keydown.down="handleKeydownDown" 
-    @keydown.left="handleKeydownLeft" 
-    @keydown.right="handleKeydownRight" 
+    class="game-map"
+    @keydown.up="handleKeydownUp"
+    @keydown.down="handleKeydownDown"
+    @keydown.left="handleKeydownLeft"
+    @keydown.right="handleKeydownRight"
   >
-    <div v-for="row in MAP_SIZE" :key="`row-${row}`" :data-pos-y="row" class="game-map-row" >
-      <div 
-        v-for="col in MAP_SIZE" 
+    <div
+      v-for="row in MAP_SIZE"
+      :key="`row-${row}`"
+      :data-pos-y="row"
+      class="game-map-row"
+    >
+      <div
+        v-for="col in MAP_SIZE"
         :key="`col-${col}`"
-        :data-pos="`${col-1},${row-1},0`"
-        :class="{'game-map-cell': true}"
+        :data-pos="`${col - 1},${row - 1},0`"
+        :class="{ 'game-map-cell': true }"
         ref="mapRefs"
       ></div>
     </div>
@@ -30,27 +34,27 @@ export default defineComponent({
   name: 'GameMap',
   setup() {
     const player = inject('player') as Ref<Player>;
-    const mapRefs = ref<HTMLDivElement[]>([])
-    const currentPosition = ref<HTMLDivElement | null>(null)
+    const mapRefs = ref<HTMLDivElement[]>([]);
+    const currentPosition = ref<HTMLDivElement | null>(null);
 
     function handleKeydownUp() {
       player.value.moveUp();
-      updatePos()
+      updatePos();
     }
-    
+
     function handleKeydownDown() {
       player.value.moveDown();
-      updatePos()
+      updatePos();
     }
-    
+
     function handleKeydownLeft() {
       player.value.moveLeft();
-      updatePos()
+      updatePos();
     }
-    
+
     function handleKeydownRight() {
       player.value.moveRight();
-      updatePos()
+      updatePos();
     }
 
     function updatePos() {
@@ -60,23 +64,24 @@ export default defineComponent({
         if (typeof posX === 'number' && typeof posY === 'number') {
           return posX === player.value.posX && posY === player.value.posY;
         }
-      })
+      });
 
       if (newPos) {
         currentPosition.value = newPos;
       }
     }
 
-    watch(() => currentPosition.value, (val, oldVal) => {
+    watch(
+      () => currentPosition.value,
+      (val, oldVal) => {
         oldVal?.classList.remove('player');
         val?.classList.add('player');
-      }
-    )
+      },
+    );
 
     onMounted(() => {
       updatePos();
-    })
-
+    });
 
     return {
       MAP_SIZE,
@@ -85,9 +90,9 @@ export default defineComponent({
       handleKeydownUp,
       handleKeydownDown,
       handleKeydownLeft,
-      handleKeydownRight
+      handleKeydownRight,
     };
-  }
+  },
 });
 </script>
 
@@ -97,7 +102,7 @@ $cell-lenght: 80px;
 .game-map {
   display: flex;
   flex-direction: column;
-  width: calc(v-bind(MAP_SIZE) * #{$cell-lenght}); 
+  width: calc(v-bind(MAP_SIZE) * #{$cell-lenght});
   height: calc(v-bind(MAP_SIZE) * #{$cell-lenght});
   border: 1px solid #000;
 }

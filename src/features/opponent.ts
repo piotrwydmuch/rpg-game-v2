@@ -26,5 +26,4 @@ export class Opponent {
   moveRandom() {
     // some random moves?
   }
-
 }
