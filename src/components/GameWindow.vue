@@ -1,51 +1,89 @@
 
 <template>
-  <div class="game-window" @keydown="handleKeydown" tabindex="0">
-    <div v-for="row in 9" :key="`row-${row}`" class="game-window-row">
+  <div 
+    tabindex="0"
+    class="game-window" 
+    @keydown.up="handleKeydownUp" 
+    @keydown.down="handleKeydownDown" 
+    @keydown.left="handleKeydownLeft" 
+    @keydown.right="handleKeydownRight" 
+  >
+    <div v-for="row in 9" :key="`row-${row}`" :data-pos-y="row" class="game-window-row" >
       <div 
         v-for="col in 9" 
         :key="`col-${col}`"
-        :class="{'game-window-cell': true, 'player': isPlayerAt(col - 1, row - 1)}"
+        :data-pos="`${col-1},${row-1},0`"
+        :class="{'game-window-cell': true}"
+        ref="mapRefs"
       ></div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, inject } from 'vue';
-import { Player } from '@features/player/playerLogic.ts';
+import { defineComponent, Ref, inject, ref, watch, onMounted } from 'vue';
+import { Player } from '@features/player.ts';
+// import { Opponent } from '@features/opponent.ts';
 
 export default defineComponent({
   name: 'GameWindow',
   setup() {
     const player = inject('player') as Ref<Player>;
+    const mapRefs = ref<HTMLDivElement[]>([])
+    const currentPosition = ref<HTMLDivElement | null>(null)
 
-    function handleKeydown(event: KeyboardEvent) {
-      switch (event.key) {
-        case 'ArrowUp':
-          player.value.moveUp();
-          break;
-        case 'ArrowDown':
-          player.value.moveDown();
-          break;
-        case 'ArrowLeft':
-          player.value.moveLeft();
-          break;
-        case 'ArrowRight':
-          player.value.moveRight();
-          break;
+    function handleKeydownUp() {
+      player.value.moveUp();
+      updatePos()
+    }
+    
+    function handleKeydownDown() {
+      player.value.moveDown();
+      updatePos()
+    }
+    
+    function handleKeydownLeft() {
+      player.value.moveLeft();
+      updatePos()
+    }
+    
+    function handleKeydownRight() {
+      player.value.moveRight();
+      updatePos()
+    }
+
+    function updatePos() {
+      const newPos = mapRefs.value.find((el) => {
+        const posX = Number(el.dataset['pos']?.split(',')[0]);
+        const posY = Number(el.dataset['pos']?.split(',')[1]);
+        if (typeof posX === 'number' && typeof posY === 'number') {
+          return posX === player.value.posX && posY === player.value.posY;
+        }
+      })
+
+      if (newPos) {
+        currentPosition.value = newPos;
       }
-
-      player.value.hasScored(1);
     }
 
-    function isPlayerAt(x: number, y: number): boolean {
-      return player.value.posX === x && player.value.posY === y;
-    }
+    watch(() => currentPosition.value, (val, oldVal) => {
+        oldVal?.classList.remove('player');
+        val?.classList.add('player');
+      }
+    )
+
+    onMounted(() => {
+      updatePos();
+    })
+
 
     return {
-      handleKeydown,
-      isPlayerAt
+      mapRefs,
+      updatePos,
+      handleKeydownUp,
+      handleKeydownDown,
+      handleKeydownLeft,
+      handleKeydownRight
     };
   }
 });
@@ -75,5 +113,9 @@ $cell-lenght: 80px;
 
 .player {
   background-color: blue;
+}
+
+.opponent {
+  background-color: red;
 }
 </style>

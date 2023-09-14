@@ -14,7 +14,7 @@
 import GameWindow from './components/GameWindow.vue'
 import SideBar from './components/SideBar.vue'
 import { defineComponent, ref, provide } from 'vue';
-import { Player } from '@features/player/playerLogic.ts';
+import { Player } from '@features/player.ts';
 
 export default defineComponent({
   components: {
@@ -44,3 +44,4 @@ main {
 }
 
 </style>
+@features/player/player

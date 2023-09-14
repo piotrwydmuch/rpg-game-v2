@@ -7,7 +7,7 @@
 
 <script lang="ts">
 import { defineComponent, inject, Ref} from 'vue';
-import { Player } from '@features/player/playerLogic.ts';
+import { Player } from '@features/player.ts';
 
 export default defineComponent({
   name: 'SideBar',
@@ -24,3 +24,4 @@ export default defineComponent({
 <style lang="scss" scoped>
 
 </style>
+@features/player/player
