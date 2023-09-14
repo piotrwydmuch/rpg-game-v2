@@ -8,9 +8,9 @@
     @keydown.left="handleKeydownLeft" 
     @keydown.right="handleKeydownRight" 
   >
-    <div v-for="row in 9" :key="`row-${row}`" :data-pos-y="row" class="game-window-row" >
+    <div v-for="row in MAP_SIZE" :key="`row-${row}`" :data-pos-y="row" class="game-window-row" >
       <div 
-        v-for="col in 9" 
+        v-for="col in MAP_SIZE" 
         :key="`col-${col}`"
         :data-pos="`${col-1},${row-1},0`"
         :class="{'game-window-cell': true}"
@@ -22,7 +22,8 @@
 
 <script lang="ts">
 import { defineComponent, Ref, inject, ref, watch, onMounted } from 'vue';
-import { Player } from '@features/player.ts';
+import { Player } from '@features/player';
+import { MAP_SIZE } from '@features/map';
 // import { Opponent } from '@features/opponent.ts';
 
 export default defineComponent({
@@ -78,6 +79,7 @@ export default defineComponent({
 
 
     return {
+      MAP_SIZE,
       mapRefs,
       updatePos,
       handleKeydownUp,
@@ -95,8 +97,8 @@ $cell-lenght: 80px;
 .game-window {
   display: flex;
   flex-direction: column;
-  width: calc(9 * #{$cell-lenght}); 
-  height: calc(9 * #{$cell-lenght});
+  width: calc(v-bind(MAP_SIZE) * #{$cell-lenght}); 
+  height: calc(v-bind(MAP_SIZE) * #{$cell-lenght});
   border: 1px solid #000;
 }
 
