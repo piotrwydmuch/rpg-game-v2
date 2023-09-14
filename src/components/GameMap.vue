@@ -2,18 +2,18 @@
 <template>
   <div 
     tabindex="0"
-    class="game-window" 
+    class="game-map" 
     @keydown.up="handleKeydownUp" 
     @keydown.down="handleKeydownDown" 
     @keydown.left="handleKeydownLeft" 
     @keydown.right="handleKeydownRight" 
   >
-    <div v-for="row in MAP_SIZE" :key="`row-${row}`" :data-pos-y="row" class="game-window-row" >
+    <div v-for="row in MAP_SIZE" :key="`row-${row}`" :data-pos-y="row" class="game-map-row" >
       <div 
         v-for="col in MAP_SIZE" 
         :key="`col-${col}`"
         :data-pos="`${col-1},${row-1},0`"
-        :class="{'game-window-cell': true}"
+        :class="{'game-map-cell': true}"
         ref="mapRefs"
       ></div>
     </div>
@@ -27,7 +27,7 @@ import { MAP_SIZE } from '@features/map';
 // import { Opponent } from '@features/opponent.ts';
 
 export default defineComponent({
-  name: 'GameWindow',
+  name: 'GameMap',
   setup() {
     const player = inject('player') as Ref<Player>;
     const mapRefs = ref<HTMLDivElement[]>([])
@@ -94,7 +94,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 $cell-lenght: 80px;
 
-.game-window {
+.game-map {
   display: flex;
   flex-direction: column;
   width: calc(v-bind(MAP_SIZE) * #{$cell-lenght}); 
@@ -102,12 +102,12 @@ $cell-lenght: 80px;
   border: 1px solid #000;
 }
 
-.game-window-row {
+.game-map-row {
   display: flex;
   flex-direction: row;
 }
 
-.game-window-cell {
+.game-map-cell {
   width: $cell-lenght;
   height: $cell-lenght;
   background-color: #0d7e65;
