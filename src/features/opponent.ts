@@ -1,12 +1,10 @@
-export class Player {
+export class Opponent {
   posX: number;
   posY: number;
-  score: number;
 
   constructor(initialX: number, initialY: number) {
     this.posX = initialX;
     this.posY = initialY;
-    this.score = 0;
   }
 
   moveUp() {
@@ -25,7 +23,8 @@ export class Player {
     this.posX = Math.min(8, this.posX + 1);
   }
 
-  hasScored(points: number) {
-    this.score += points;
-  }  
+  moveRandom() {
+    // some random moves?
+  }
+
 }
