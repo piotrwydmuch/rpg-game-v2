@@ -27,13 +27,14 @@
 <script lang="ts">
 import { defineComponent, Ref, inject, ref, watch, onMounted } from 'vue';
 import { Player } from '@features/player';
-import { MAP_SIZE } from '@features/map';
+import { Map, MAP_SIZE } from '@features/map';
 // import { Opponent } from '@features/opponent.ts';
 
 export default defineComponent({
   name: 'GameMap',
   setup() {
     const player = inject('player') as Ref<Player>;
+    const map = inject('map') as Ref<Map>;
     const mapRefs = ref<HTMLDivElement[]>([]);
     const currentPosition = ref<HTMLDivElement | null>(null);
 
@@ -71,6 +72,15 @@ export default defineComponent({
       }
     }
 
+    function renderObjects() {
+      const numberOfElements = map.value.numberOfNeutralMapObjects;
+      for (let index = 0; index < numberOfElements; index++) {
+        mapRefs.value[
+          Math.floor(Math.random() * mapRefs.value.length)
+        ].classList.add('neutral-object');
+      }
+    }
+
     watch(
       () => currentPosition.value,
       (val, oldVal) => {
@@ -81,6 +91,7 @@ export default defineComponent({
 
     onMounted(() => {
       updatePos();
+      renderObjects();
     });
 
     return {
@@ -124,5 +135,9 @@ $cell-lenght: 80px;
 
 .opponent {
   background-color: red;
+}
+
+.neutral-object {
+  background-color: #dedede;
 }
 </style>
