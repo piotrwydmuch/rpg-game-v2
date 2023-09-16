@@ -45,4 +45,3 @@ main {
   justify-content: center;
 }
 </style>
-@features/player/player

@@ -40,22 +40,18 @@ export default defineComponent({
 
     function handleKeydownUp() {
       player.value.moveUp();
-      updatePos();
     }
 
     function handleKeydownDown() {
       player.value.moveDown();
-      updatePos();
     }
 
     function handleKeydownLeft() {
       player.value.moveLeft();
-      updatePos();
     }
 
     function handleKeydownRight() {
       player.value.moveRight();
-      updatePos();
     }
 
     function updatePos() {
@@ -72,7 +68,7 @@ export default defineComponent({
       }
     }
 
-    function renderObjects() {
+    function renderNeutralObjects() {
       const numberOfElements = map.value.numberOfNeutralMapObjects;
       for (let index = 0; index < numberOfElements; index++) {
         mapRefs.value[
@@ -82,16 +78,23 @@ export default defineComponent({
     }
 
     watch(
+      () => [player.value.posX, player.value.posY],
+      () => {
+        updatePos();
+      },
+    );
+
+    watch(
       () => currentPosition.value,
-      (val, oldVal) => {
+      (nweVal, oldVal) => {
         oldVal?.classList.remove('player');
-        val?.classList.add('player');
+        nweVal?.classList.add('player');
       },
     );
 
     onMounted(() => {
       updatePos();
-      renderObjects();
+      renderNeutralObjects();
     });
 
     return {

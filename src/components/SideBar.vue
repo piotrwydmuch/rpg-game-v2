@@ -1,5 +1,8 @@
 <template>
-  <div class="sidebar">score: {{ player.score }}</div>
+  <div class="sidebar">
+    <p>score: {{ player.score }}</p>
+    <p>pos: ({{ player.posX }},{{ player.posY }})</p>
+  </div>
 </template>
 
 <script lang="ts">
@@ -19,4 +22,3 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped></style>
-@features/player/player
