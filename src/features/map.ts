@@ -2,14 +2,35 @@
 
 export class Map {
   size: number;
-  mapWidth: number;
-  mapHeight: number;
-  numberOfNeutralMapObjects: number;
+  barriers: number;
+  mapArray: Array<Array<String>>;
 
-  constructor(size: number, objectsAmount: number) {
+  constructor(size: number, barriers: number) {
     this.size = size;
-    this.mapWidth = size;
-    this.mapHeight = size;
-    this.numberOfNeutralMapObjects = objectsAmount;
+    this.barriers = barriers;
+    this.mapArray = this.generateMapArray();
+  }
+
+  private generateMapArray(): string[][] {
+    const mapArray = [];
+    for (let i = 0; i < this.size; i++) {
+      const row: string[] = [];
+      for (let j = 0; j < this.size; j++) {
+        row.push('');
+      }
+      mapArray.push(row);
+    }
+
+    for (let i = 0; i < this.barriers; i++) {
+      let row, col;
+      do {
+        row = Math.floor(Math.random() * this.size);
+        col = Math.floor(Math.random() * this.size);
+      } while (mapArray[row][col] === 'barrier');
+
+      mapArray[row][col] = 'barrier';
+    }
+
+    return mapArray;
   }
 }

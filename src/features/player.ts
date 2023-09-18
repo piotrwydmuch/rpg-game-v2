@@ -12,19 +12,31 @@ export class Player {
   }
 
   moveUp() {
-    this.posY = Math.max(0, this.posY - 1);
+    const nextPos = Math.max(0, this.posY - 1);
+    if (state.map.mapArray[nextPos][this.posX] !== 'barrier') {
+      this.posY = nextPos;
+    }
   }
 
   moveDown() {
-    this.posY = Math.min(state.map.size - 1, this.posY + 1);
+    const nextPos = Math.min(state.map.size - 1, this.posY + 1);
+    if (state.map.mapArray[nextPos][this.posX] !== 'barrier') {
+      this.posY = nextPos;
+    }
   }
 
   moveLeft() {
-    this.posX = Math.max(0, this.posX - 1);
+    const nextPos = Math.max(0, this.posX - 1);
+    if (state.map.mapArray[this.posY][nextPos] !== 'barrier') {
+      this.posX = nextPos;
+    }
   }
 
   moveRight() {
-    this.posX = Math.min(state.map.size - 1, this.posX + 1);
+    const nextPos = Math.min(state.map.size - 1, this.posX + 1);
+    if (state.map.mapArray[this.posY][nextPos] !== 'barrier') {
+      this.posX = nextPos;
+    }
   }
 
   hasScored(points: number) {

@@ -8,16 +8,16 @@
     @keydown.right="handleKeydownRight"
   >
     <div
-      v-for="row in state.map.size"
-      :key="`row-${row}`"
-      :data-pos-y="row"
+      v-for="(row, i) in state.map.mapArray"
+      :key="`row-${i}`"
+      :data-pos-y="i"
       class="game-map-row"
     >
       <div
-        v-for="col in state.map.size"
-        :key="`col-${col}`"
-        :data-pos="`${col - 1},${row - 1},0`"
-        :class="{ 'game-map-cell': true }"
+        v-for="(col, j) in row"
+        :key="`col-${j}`"
+        :data-pos="`${j},${i},0`"
+        :class="{ 'game-map-cell': true, barrier: col }"
         ref="mapRefs"
       ></div>
     </div>
@@ -65,15 +65,6 @@ export default defineComponent({
       }
     }
 
-    // function renderNeutralObjects() {
-    //   const numberOfElements = map.value.numberOfNeutralMapObjects;
-    //   for (let index = 0; index < numberOfElements; index++) {
-    //     mapRefs.value[
-    //       Math.floor(Math.random() * mapRefs.value.length)
-    //     ].classList.add('neutral-object');
-    //   }
-    // }
-
     watch(
       () => [state.player.posX, state.player.posY],
       () => {
@@ -91,7 +82,6 @@ export default defineComponent({
 
     onMounted(() => {
       updatePos();
-      // renderNeutralObjects();
     });
 
     return {
@@ -139,7 +129,7 @@ $cell-lenght: 80px;
   background-color: red;
 }
 
-.neutral-object {
+.barrier {
   background-color: #dedede;
 }
 </style>
