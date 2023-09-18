@@ -1,21 +1,19 @@
 <template>
   <div class="sidebar">
-    <p>score: {{ player.score }}</p>
-    <p>pos: ({{ player.posX }},{{ player.posY }})</p>
+    <p>score: {{ state.player.score }}</p>
+    <p>pos: ({{ state.player.posX }},{{ state.player.posY }})</p>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, Ref } from 'vue';
-import { Player } from '@features/player.ts';
+import { defineComponent } from 'vue';
+import { state } from '@features/store.ts';
 
 export default defineComponent({
   name: 'SideBar',
   setup() {
-    const player = inject('player') as Ref<Player>;
-
     return {
-      player,
+      state,
     };
   },
 });

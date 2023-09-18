@@ -1,12 +1,15 @@
 // map starts from (0, 0) coords, counting from Top Left corner
-export const MAP_SIZE: number = 9;
-export const MAP_WIDTH: number = MAP_SIZE;
-export const MAP_HEIGHT: number = MAP_SIZE;
 
 export class Map {
+  size: number;
+  mapWidth: number;
+  mapHeight: number;
   numberOfNeutralMapObjects: number;
 
-  constructor(objectsAmount: number) {
+  constructor(size: number, objectsAmount: number) {
+    this.size = size;
+    this.mapWidth = size;
+    this.mapHeight = size;
     this.numberOfNeutralMapObjects = objectsAmount;
   }
 }

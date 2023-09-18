@@ -8,13 +8,13 @@
     @keydown.right="handleKeydownRight"
   >
     <div
-      v-for="row in MAP_SIZE"
+      v-for="row in state.map.size"
       :key="`row-${row}`"
       :data-pos-y="row"
       class="game-map-row"
     >
       <div
-        v-for="col in MAP_SIZE"
+        v-for="col in state.map.size"
         :key="`col-${col}`"
         :data-pos="`${col - 1},${row - 1},0`"
         :class="{ 'game-map-cell': true }"
@@ -25,33 +25,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, Ref, inject, ref, watch, onMounted } from 'vue';
-import { Player } from '@features/player';
-import { Map, MAP_SIZE } from '@features/map';
+import { defineComponent, ref, watch, onMounted } from 'vue';
+import { state } from '@features/store.ts';
 // import { Opponent } from '@features/opponent.ts';
 
 export default defineComponent({
   name: 'GameMap',
   setup() {
-    const player = inject('player') as Ref<Player>;
-    const map = inject('map') as Ref<Map>;
     const mapRefs = ref<HTMLDivElement[]>([]);
     const currentPosition = ref<HTMLDivElement | null>(null);
 
     function handleKeydownUp() {
-      player.value.moveUp();
+      state.player.moveUp();
     }
 
     function handleKeydownDown() {
-      player.value.moveDown();
+      state.player.moveDown();
     }
 
     function handleKeydownLeft() {
-      player.value.moveLeft();
+      state.player.moveLeft();
     }
 
     function handleKeydownRight() {
-      player.value.moveRight();
+      state.player.moveRight();
     }
 
     function updatePos() {
@@ -59,7 +56,7 @@ export default defineComponent({
         const posX = Number(el.dataset['pos']?.split(',')[0]);
         const posY = Number(el.dataset['pos']?.split(',')[1]);
         if (typeof posX === 'number' && typeof posY === 'number') {
-          return posX === player.value.posX && posY === player.value.posY;
+          return posX === state.player.posX && posY === state.player.posY;
         }
       });
 
@@ -68,17 +65,17 @@ export default defineComponent({
       }
     }
 
-    function renderNeutralObjects() {
-      const numberOfElements = map.value.numberOfNeutralMapObjects;
-      for (let index = 0; index < numberOfElements; index++) {
-        mapRefs.value[
-          Math.floor(Math.random() * mapRefs.value.length)
-        ].classList.add('neutral-object');
-      }
-    }
+    // function renderNeutralObjects() {
+    //   const numberOfElements = map.value.numberOfNeutralMapObjects;
+    //   for (let index = 0; index < numberOfElements; index++) {
+    //     mapRefs.value[
+    //       Math.floor(Math.random() * mapRefs.value.length)
+    //     ].classList.add('neutral-object');
+    //   }
+    // }
 
     watch(
-      () => [player.value.posX, player.value.posY],
+      () => [state.player.posX, state.player.posY],
       () => {
         updatePos();
       },
@@ -94,11 +91,11 @@ export default defineComponent({
 
     onMounted(() => {
       updatePos();
-      renderNeutralObjects();
+      // renderNeutralObjects();
     });
 
     return {
-      MAP_SIZE,
+      state,
       mapRefs,
       updatePos,
       handleKeydownUp,
@@ -116,8 +113,10 @@ $cell-lenght: 80px;
 .game-map {
   display: flex;
   flex-direction: column;
-  width: calc(v-bind(MAP_SIZE) * #{$cell-lenght});
-  height: calc(v-bind(MAP_SIZE) * #{$cell-lenght});
+  width: calc(v-bind(9) * #{$cell-lenght});
+  height: calc(v-bind(9) * #{$cell-lenght});
+  // width: calc(v-bind(state.map.size) * #{$cell-lenght});
+  // height: calc(v-bind(state.map.size) * #{$cell-lenght});
   border: 1px solid #000;
 }
 

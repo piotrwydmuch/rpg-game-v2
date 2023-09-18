@@ -1,4 +1,4 @@
-import { MAP_SIZE } from '@features/map.ts';
+import { state } from './store.ts';
 
 export class Player {
   posX: number;
@@ -16,7 +16,7 @@ export class Player {
   }
 
   moveDown() {
-    this.posY = Math.min(MAP_SIZE - 1, this.posY + 1);
+    this.posY = Math.min(state.map.size - 1, this.posY + 1);
   }
 
   moveLeft() {
@@ -24,7 +24,7 @@ export class Player {
   }
 
   moveRight() {
-    this.posX = Math.min(MAP_SIZE - 1, this.posX + 1);
+    this.posX = Math.min(state.map.size - 1, this.posX + 1);
   }
 
   hasScored(points: number) {
