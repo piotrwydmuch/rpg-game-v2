@@ -34,6 +34,7 @@ export default defineComponent({
   setup() {
     const mapRefs = ref<HTMLDivElement[]>([]);
     const currentPosition = ref<HTMLDivElement | null>(null);
+    const mapSize = state.map.size;
 
     function handleKeydownUp() {
       state.player.moveUp();
@@ -87,6 +88,7 @@ export default defineComponent({
     return {
       state,
       mapRefs,
+      mapSize,
       updatePos,
       handleKeydownUp,
       handleKeydownDown,
@@ -103,10 +105,8 @@ $cell-lenght: 80px;
 .game-map {
   display: flex;
   flex-direction: column;
-  width: calc(v-bind(9) * #{$cell-lenght});
-  height: calc(v-bind(9) * #{$cell-lenght});
-  // width: calc(v-bind(state.map.size) * #{$cell-lenght});
-  // height: calc(v-bind(state.map.size) * #{$cell-lenght});
+  width: calc(v-bind(mapSize) * #{$cell-lenght});
+  height: calc(v-bind(mapSize) * #{$cell-lenght});
   border: 1px solid #000;
 }
 

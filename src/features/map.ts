@@ -23,11 +23,11 @@ export class Map {
 
     for (let i = 0; i < this.barriers; i++) {
       let row, col;
-      do {
-        row = Math.floor(Math.random() * this.size);
-        col = Math.floor(Math.random() * this.size);
-      } while (mapArray[row][col] === 'barrier');
-
+      row = Math.floor(Math.random() * this.size);
+      col = Math.floor(Math.random() * this.size);
+      if (row === 0 && col === 0) {
+        continue;
+      }
       mapArray[row][col] = 'barrier';
     }
 
