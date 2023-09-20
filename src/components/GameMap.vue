@@ -17,9 +17,15 @@
         v-for="(col, j) in row"
         :key="`col-${j}`"
         :data-pos="`${j},${i},0`"
-        :class="{ 'game-map-cell': true, barrier: col }"
+        :class="{
+          'game-map-cell': true,
+          barrier: col === 'barrier',
+          points: col === 'points',
+        }"
         ref="mapRefs"
-      ></div>
+      >
+        <span>{{ col }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -66,10 +72,17 @@ export default defineComponent({
       }
     }
 
+    function checkPoints(posY: number, posX: number) {
+      if (state.map.mapArray[posY][posX] === 'points') {
+        state.player.hasScored(1);
+      }
+    }
+
     watch(
       () => [state.player.posX, state.player.posY],
-      () => {
+      ([newX, newY]) => {
         updatePos();
+        checkPoints(newY, newX);
       },
     );
 
@@ -131,5 +144,9 @@ $cell-lenght: 80px;
 
 .barrier {
   background-color: #dedede;
+}
+
+.points {
+  background-color: gold;
 }
 </style>
