@@ -23,9 +23,7 @@
           points: col === 'points',
         }"
         ref="mapRefs"
-      >
-        <span>{{ col }}</span>
-      </div>
+      ></div>
     </div>
   </div>
 </template>
@@ -75,6 +73,7 @@ export default defineComponent({
     function checkPoints(posY: number, posX: number) {
       if (state.map.mapArray[posY][posX] === 'points') {
         state.player.hasScored(1);
+        state.map.mapArray[posY][posX] = '';
       }
     }
 
