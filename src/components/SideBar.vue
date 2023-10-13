@@ -2,6 +2,7 @@
   <div class="sidebar">
     <p>score: {{ state.player.score }}</p>
     <p>pos: ({{ state.player.posX }},{{ state.player.posY }})</p>
+    <p>direction : {{ state.player.direction }}</p>
   </div>
 </template>
 
