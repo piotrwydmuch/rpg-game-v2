@@ -23,7 +23,12 @@
           points: col === 'points',
         }"
         ref="mapRefs"
-      ></div>
+      >
+        <div
+          v-if="state.player.posX === j && state.player.posY === i"
+          class="player"
+        ></div>
+      </div>
     </div>
   </div>
 </template>
@@ -85,14 +90,6 @@ export default defineComponent({
       },
     );
 
-    watch(
-      () => currentPosition.value,
-      (nweVal, oldVal) => {
-        oldVal?.classList.remove('player');
-        nweVal?.classList.add('player');
-      },
-    );
-
     onMounted(() => {
       updatePos();
     });
@@ -135,6 +132,9 @@ $cell-lenght: 80px;
 
 .player {
   background-color: blue;
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .opponent {
