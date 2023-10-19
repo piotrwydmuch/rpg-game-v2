@@ -19,7 +19,8 @@
         :data-pos="`${j},${i},0`"
         :class="{
           'game-map-cell': true,
-          barrier: col === 'barrier',
+          boulder: col.includes('boulder'),
+          tree: col.includes('tree'),
           points: col === 'points',
         }"
         ref="mapRefs"
@@ -141,8 +142,11 @@ $cell-lenght: 80px;
   background-color: red;
 }
 
-.barrier {
+.boulder {
   background-color: #dedede;
+}
+.tree {
+  background-color: #035824;
 }
 
 .points {

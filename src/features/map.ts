@@ -2,13 +2,20 @@
 
 export class Map {
   size: number;
-  barriers: number;
+  boulders: number;
+  trees: number;
   pointFields: number;
   mapArray: Array<Array<String>>;
 
-  constructor(size: number, barriers: number, pointFields: number) {
+  constructor(
+    size: number,
+    boulders: number,
+    trees: number,
+    pointFields: number,
+  ) {
     this.size = size;
-    this.barriers = barriers;
+    this.boulders = boulders;
+    this.trees = trees;
     this.pointFields = pointFields;
     this.mapArray = this.generateRandomMap();
   }
@@ -25,8 +32,8 @@ export class Map {
       mapArray.push(row);
     }
 
-    /* Barriers generation */
-    for (let i = 0; i < this.barriers; i++) {
+    /* boulders generation */
+    for (let i = 0; i < this.boulders; i++) {
       let row, col;
       row = Math.floor(Math.random() * this.size);
       col = Math.floor(Math.random() * this.size);
@@ -35,7 +42,21 @@ export class Map {
         i--;
         continue;
       } else {
-        mapArray[row][col] = 'barrier';
+        mapArray[row][col] = 'barrier boulder';
+      }
+    }
+
+    /* trees generation */
+    for (let i = 0; i < this.trees; i++) {
+      let row, col;
+      row = Math.floor(Math.random() * this.size);
+      col = Math.floor(Math.random() * this.size);
+
+      if (row === 0 && col === 0) {
+        i--;
+        continue;
+      } else {
+        mapArray[row][col] = 'barrier tree';
       }
     }
 
@@ -45,7 +66,12 @@ export class Map {
       row = Math.floor(Math.random() * this.size);
       col = Math.floor(Math.random() * this.size);
 
-      if ((row === 0 && col === 0) || mapArray[row][col].includes('barrier')) {
+      if (
+        (row === 0 && col === 0) ||
+        mapArray[row][col].includes('barrier') ||
+        mapArray[row][col].includes('player') ||
+        mapArray[row][col].includes('points')
+      ) {
         i--;
         continue;
       } else {
