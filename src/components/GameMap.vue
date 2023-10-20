@@ -25,13 +25,17 @@
           v-if="state.player.posX === j && state.player.posY === i"
           class="player"
         ></div>
+        <div
+          v-if="state.opponent.posX === j && state.opponent.posY === i"
+          class="opponent"
+        ></div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, onMounted, computed } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import { state } from '@features/store.ts';
 // import { Opponent } from '@features/opponent.ts';
 
@@ -39,7 +43,7 @@ export default defineComponent({
   name: 'GameMap',
   setup() {
     const mapRefs = ref<HTMLDivElement[]>([]);
-    const currentPosition = ref<HTMLDivElement | null>(null);
+    // const currentPosition = ref<HTMLDivElement | null>(null);
     const mapSize = state.map.size;
 
     function handleKeydownUp() {
@@ -58,20 +62,6 @@ export default defineComponent({
       state.player.moveRight();
     }
 
-    function updatePos() {
-      const newPos = mapRefs.value.find((el) => {
-        const posX = Number(el.dataset['pos']?.split(',')[0]);
-        const posY = Number(el.dataset['pos']?.split(',')[1]);
-        if (typeof posX === 'number' && typeof posY === 'number') {
-          return posX === state.player.posX && posY === state.player.posY;
-        }
-      });
-
-      if (newPos) {
-        currentPosition.value = newPos;
-      }
-    }
-
     function checkPoints(posY: number, posX: number) {
       if (state.map.mapArray[posY][posX] === 'points') {
         state.player.hasScored(1);
@@ -82,20 +72,14 @@ export default defineComponent({
     watch(
       () => [state.player.posX, state.player.posY],
       ([newX, newY]) => {
-        updatePos();
         checkPoints(newY, newX);
       },
     );
-
-    onMounted(() => {
-      updatePos();
-    });
 
     return {
       state,
       mapRefs,
       mapSize,
-      updatePos,
       handleKeydownUp,
       handleKeydownDown,
       handleKeydownLeft,
@@ -142,6 +126,13 @@ $cell-lenght: 80px;
 
 .opponent {
   background-color: red;
+  position: relative;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
 }
 
 .boulder {
