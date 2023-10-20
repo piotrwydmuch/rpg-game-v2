@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { state } from '@features/store.ts';
 // import { Opponent } from '@features/opponent.ts';
 
@@ -62,6 +62,21 @@ export default defineComponent({
       state.player.moveRight();
     }
 
+    /* Move this to opponent class */
+    function opponentRandomMoves() {
+      const moves = [
+        state.opponent.moveDown.bind(state.opponent),
+        state.opponent.moveUp.bind(state.opponent),
+        state.opponent.moveLeft.bind(state.opponent),
+        state.opponent.moveRight.bind(state.opponent),
+      ];
+
+      setInterval(() => {
+        const randomMove = Math.floor(Math.random() * moves.length);
+        moves[randomMove]();
+      }, 1500);
+    }
+
     function checkPoints(posY: number, posX: number) {
       if (state.map.mapArray[posY][posX] === 'points') {
         state.player.hasScored(1);
@@ -75,6 +90,10 @@ export default defineComponent({
         checkPoints(newY, newX);
       },
     );
+
+    onMounted(() => {
+      opponentRandomMoves();
+    });
 
     return {
       state,
