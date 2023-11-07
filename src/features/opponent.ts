@@ -20,13 +20,14 @@ export class Opponent {
     this.autoWalkingInterval = null;
   }
 
+  private noBarriers(row: number, col: number) {
+    return !state.map.mapArray[row][col].includes('barrier');
+  }
+
   moveUp() {
     const nextPos = this.posY - 1;
     this.direction = Direction.Up;
-    if (
-      nextPos >= 0 &&
-      !state.map.mapArray[nextPos][this.posX].includes('barrier')
-    ) {
+    if (nextPos >= 0 && this.noBarriers(nextPos, this.posX)) {
       this.posY = nextPos;
     } else {
       // this.tryToMoveAgain();
@@ -36,10 +37,7 @@ export class Opponent {
   moveDown() {
     const nextPos = this.posY + 1;
     this.direction = Direction.Down;
-    if (
-      nextPos <= state.map.size - 1 &&
-      !state.map.mapArray[nextPos][this.posX].includes('barrier')
-    ) {
+    if (nextPos <= state.map.size - 1 && this.noBarriers(nextPos, this.posX)) {
       this.posY = nextPos;
     } else {
       // this.tryToMoveAgain();
@@ -49,10 +47,7 @@ export class Opponent {
   moveLeft() {
     const nextPos = this.posX - 1;
     this.direction = Direction.Left;
-    if (
-      nextPos >= 0 &&
-      !state.map.mapArray[this.posY][nextPos].includes('barrier')
-    ) {
+    if (nextPos >= 0 && this.noBarriers(this.posY, nextPos)) {
       this.posX = nextPos;
     } else {
       // this.tryToMoveAgain();
@@ -62,10 +57,7 @@ export class Opponent {
   moveRight() {
     const nextPos = this.posX + 1;
     this.direction = Direction.Right;
-    if (
-      nextPos <= state.map.size - 1 &&
-      !state.map.mapArray[this.posY][nextPos].includes('barrier')
-    ) {
+    if (nextPos <= state.map.size - 1 && this.noBarriers(this.posY, nextPos)) {
       this.posX = nextPos;
     } else {
       // this.tryToMoveAgain();
