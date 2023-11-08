@@ -72,13 +72,14 @@ export default defineComponent({
     watch(
       () => [state.player.posX, state.player.posY],
       ([newX, newY]) => {
+        state.opponent.findShortestPath(newX, newY) 
         checkPoints(newY, newX);
       },
     );
 
     onMounted(() => {
-      state.opponent.enableAutoWalking();
-      // opponentRandomMoves();
+      state.opponent.findShortestPath(state.player.posX, state.player.posY) 
+      state.opponent.enableWalkingToPlayer()
     });
 
     return {
