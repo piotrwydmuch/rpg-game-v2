@@ -23,7 +23,8 @@ export class Opponent {
   }
 
   private noBarriers(row: number, col: number) {
-    return !state.map.mapArray[row][col].includes('barrier');
+    const field = state.map.mapArray[row][col];
+    return !field.includes('barrier');
   }
 
   moveUp() {
@@ -68,8 +69,10 @@ export class Opponent {
     // ];
 
     const walking = () => {
-      const nextMove = this.movesToPlayer.shift();
-      nextMove && nextMove();
+      if (this.movesToPlayer.length > 1) {
+        const nextMove = this.movesToPlayer.shift();
+        nextMove && nextMove();
+      }
 
       /* Random walking when theres no path to player (WIP) */
       // if (this.movesToPlayer === null) {
@@ -77,7 +80,7 @@ export class Opponent {
       //   allMoves[randomMove]();
       // }
 
-      this.walkingToPlayerInterval = setTimeout(walking, 500);
+      this.walkingToPlayerInterval = setTimeout(walking, 1000);
     };
 
     walking();

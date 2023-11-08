@@ -6,5 +6,5 @@ import { reactive } from 'vue';
 export const state = reactive({
   map: new Map(9, 10, 10, 0),
   player: new Player(0, 0),
-  opponent: new Opponent(4, 4),
+  opponents: [new Opponent(4, 4), new Opponent(7, 7),],
 });

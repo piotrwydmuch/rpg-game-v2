@@ -25,10 +25,12 @@
           v-if="state.player.posX === j && state.player.posY === i"
           class="player"
         ></div>
-        <div
-          v-if="state.opponent.posX === j && state.opponent.posY === i"
-          class="opponent"
-        ></div>
+        <template v-for="mob in state.opponents">
+          <div
+            v-if="mob.posX === j && mob.posY === i"
+            class="opponent"
+          ></div>
+        </template>
       </div>
     </div>
   </div>
@@ -37,13 +39,11 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref, watch } from 'vue';
 import { state } from '@features/store.ts';
-// import { Opponent } from '@features/opponent.ts';
 
 export default defineComponent({
   name: 'GameMap',
   setup() {
     const mapRefs = ref<HTMLDivElement[]>([]);
-    // const currentPosition = ref<HTMLDivElement | null>(null);
     const mapSize = state.map.size;
 
     function handleKeydownUp() {
@@ -72,14 +72,18 @@ export default defineComponent({
     watch(
       () => [state.player.posX, state.player.posY],
       ([newX, newY]) => {
-        state.opponent.findShortestPath(newX, newY) 
+        state.opponents.forEach((mob) => {
+          mob.findShortestPath(newX, newY)
+        })
         checkPoints(newY, newX);
       },
     );
 
     onMounted(() => {
-      state.opponent.findShortestPath(state.player.posX, state.player.posY) 
-      state.opponent.enableWalkingToPlayer()
+      state.opponents.forEach((mob) => {
+        mob.findShortestPath(state.player.posX, state.player.posY) 
+        mob.enableWalkingToPlayer()
+      })
     });
 
     return {
