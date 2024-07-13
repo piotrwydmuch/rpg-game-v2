@@ -1,4 +1,4 @@
-import { getRandomInt } from '@utils/utils.ts';
+import { randomInt } from '@utils/utils.ts';
 
 // map starts from (0, 0) coords, counting from Top Left corner
 export class Map {
@@ -43,7 +43,7 @@ export class Map {
         i--;
         continue;
       } else {
-        mapArray[row][col] = `barrier boulder asset-${getRandomInt(4) + 1}`;
+        mapArray[row][col] = `barrier boulder asset-${randomInt(4) + 1}`;
       }
     }
 
@@ -57,7 +57,7 @@ export class Map {
         i--;
         continue;
       } else {
-        mapArray[row][col] = `barrier tree asset-${getRandomInt(4) + 1}`;
+        mapArray[row][col] = `barrier tree asset-${randomInt(4) + 1}`;
       }
     }
 
