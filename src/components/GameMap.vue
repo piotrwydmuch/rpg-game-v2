@@ -2,10 +2,8 @@
   <div
     tabindex="0"
     class="game-map"
-    @keydown.up="handleKeydownUp"
-    @keydown.down="handleKeydownDown"
-    @keydown.left="handleKeydownLeft"
-    @keydown.right="handleKeydownRight"
+    @keydown="handleKeydown"
+    @keyup="handleKeyup"
   >
     <div
       v-for="(row, i) in state.map.map"
@@ -39,21 +37,32 @@ import { state } from '@features/store.ts';
 
 const mapRefs = ref<HTMLDivElement[]>([]);
 const mapSize = state.map.size;
+const keysPressed = ref<string[]>([]);
 
-function handleKeydownUp() {
-  state.player.moveUp();
+function handleKeydown(event: KeyboardEvent) {
+  keysPressed.value.push(event.key);
+
+  if (keysPressed.value.includes('ArrowUp') && keysPressed.value.includes('ArrowLeft')) {
+    state.player.moveUpLeft();
+  } else if (keysPressed.value.includes('ArrowUp') && keysPressed.value.includes('ArrowRight')) {
+    state.player.moveUpRight();
+  } else if (keysPressed.value.includes('ArrowDown') && keysPressed.value.includes('ArrowLeft')) {
+    state.player.moveDownLeft();
+  } else if (keysPressed.value.includes('ArrowDown') && keysPressed.value.includes('ArrowRight')) {
+    state.player.moveDownRight();
+  } else if (keysPressed.value.includes('ArrowUp')) {
+    state.player.moveUp();
+  } else if (keysPressed.value.includes('ArrowLeft')) {
+    state.player.moveLeft();
+  } else if (keysPressed.value.includes('ArrowDown')) {
+    state.player.moveDown();
+  } else if (keysPressed.value.includes('ArrowRight')) {
+    state.player.moveRight();
+  }
 }
 
-function handleKeydownDown() {
-  state.player.moveDown();
-}
-
-function handleKeydownLeft() {
-  state.player.moveLeft();
-}
-
-function handleKeydownRight() {
-  state.player.moveRight();
+function handleKeyup(event: KeyboardEvent) {
+  keysPressed.value.splice(keysPressed.value.indexOf(event.key), 1); // delete this single move
 }
 
 function checkPoints(posY: number, posX: number) {

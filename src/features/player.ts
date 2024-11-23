@@ -21,7 +21,7 @@ export class Player {
   }
 
   private noBarriers(row: number, col: number) {
-    return !state.map.map[row][col].includes('barrier');
+    return !state.map.map[row][col]?.includes('barrier');
   }
 
   moveUp() {
@@ -53,6 +53,54 @@ export class Player {
     this.direction = Direction.Right;
     if (nextPos <= state.map.size - 1 && this.noBarriers(this.posY, nextPos)) {
       this.posX = nextPos;
+    }
+  }
+
+  moveUpLeft() {
+    const nextPosX = this.posX - 1;
+    const nextPosY = this.posY - 1;
+    this.direction = Direction.Left;
+    if (
+      (nextPosX >= 0 && (nextPosY <= state.map.size - 1) && this.noBarriers(nextPosY, nextPosX))
+    ) {
+      this.posY = nextPosY;
+      this.posX = nextPosX;
+    }
+  }
+    
+  moveUpRight() {
+    const nextPosX = this.posX + 1;
+    const nextPosY = this.posY - 1;
+    this.direction = Direction.Left;
+    if (
+      (nextPosX >= 0 && (nextPosY <= state.map.size - 1) && this.noBarriers(nextPosY, nextPosX))
+    ) {
+      this.posY = nextPosY;
+      this.posX = nextPosX;
+    }
+  }
+    
+  moveDownLeft() {
+    const nextPosX = this.posX - 1;
+    const nextPosY = this.posY + 1;
+    this.direction = Direction.Left;
+    if (
+      (nextPosX >= 0 && (nextPosY <= state.map.size - 1) && this.noBarriers(nextPosY, nextPosX))
+    ) {
+      this.posY = nextPosY;
+      this.posX = nextPosX;
+    }
+  }
+
+  moveDownRight() {
+    const nextPosX = this.posX + 1;
+    const nextPosY = this.posY + 1;
+    this.direction = Direction.Left;
+    if (
+      (nextPosX >= 0 && (nextPosY <= state.map.size - 1) && this.noBarriers(nextPosY, nextPosX))
+    ) {
+      this.posY = nextPosY;
+      this.posX = nextPosX;
     }
   }
 
