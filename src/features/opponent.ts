@@ -12,7 +12,7 @@ export class Opponent {
   posY: number;
   direction: Direction;
   walkingToPlayerInterval: NodeJS.Timeout | null;
-  movesToPlayer: Array<Function>;
+  movesToPlayer: Array<() => void>;
 
   constructor(initialX: number, initialY: number) {
     this.posX = initialX;
@@ -23,7 +23,7 @@ export class Opponent {
   }
 
   private noBarriers(row: number, col: number) {
-    const field = state.map.mapArray[row][col];
+    const field = state.map.map[row][col];
     return !field.includes('barrier');
   }
 
@@ -93,12 +93,14 @@ export class Opponent {
       - https://www.youtube.com/watch?v=TxDVtNCZlSk
     */
     const visited = new Set();
-    const queue = [{ x: this.posX, y: this.posY, steps: 0, moves: [] as Array<Function> }];
+    const queue = [
+      { x: this.posX, y: this.posY, steps: 0, moves: [] as Array<() => void> },
+    ];
     visited.add(`${this.posX},${this.posY}`);
 
     while (queue.length > 0) {
       const current = queue.shift();
-      
+
       if (current === undefined) {
         continue;
       }
@@ -137,5 +139,5 @@ export class Opponent {
 
     /* Random walking when theres no path to player (WIP) */
     // this.movesToPlayer = null;
-  };
+  }
 }

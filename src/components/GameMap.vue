@@ -8,7 +8,7 @@
     @keydown.right="handleKeydownRight"
   >
     <div
-      v-for="(row, i) in state.map.mapArray"
+      v-for="(row, i) in state.map.map"
       :key="`row-${i}`"
       :data-pos-y="i"
       class="game-map-row"
@@ -16,86 +16,68 @@
       <div
         v-for="(col, j) in row"
         :key="`col-${j}`"
+        ref="mapRefs"
         :data-pos="`${j},${i},0`"
         class="game-map-cell"
         :class="[col.split(' ')]"
-        ref="mapRefs"
       >
         <div
           v-if="state.player.posX === j && state.player.posY === i"
           class="player"
         ></div>
-        <template v-for="mob in state.opponents">
-          <div
-            v-if="mob.posX === j && mob.posY === i"
-            class="opponent"
-          ></div>
+        <template v-for="(mob, k) in state.opponents" :key="k">
+          <div v-if="mob.posX === j && mob.posY === i" class="opponent"></div>
         </template>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
+<script lang="ts" setup>
+import { onMounted, ref, watch } from 'vue';
 import { state } from '@features/store.ts';
 
-export default defineComponent({
-  name: 'GameMap',
-  setup() {
-    const mapRefs = ref<HTMLDivElement[]>([]);
-    const mapSize = state.map.size;
+const mapRefs = ref<HTMLDivElement[]>([]);
+const mapSize = state.map.size;
 
-    function handleKeydownUp() {
-      state.player.moveUp();
-    }
+function handleKeydownUp() {
+  state.player.moveUp();
+}
 
-    function handleKeydownDown() {
-      state.player.moveDown();
-    }
+function handleKeydownDown() {
+  state.player.moveDown();
+}
 
-    function handleKeydownLeft() {
-      state.player.moveLeft();
-    }
+function handleKeydownLeft() {
+  state.player.moveLeft();
+}
 
-    function handleKeydownRight() {
-      state.player.moveRight();
-    }
+function handleKeydownRight() {
+  state.player.moveRight();
+}
 
-    function checkPoints(posY: number, posX: number) {
-      if (state.map.mapArray[posY][posX] === 'points') {
-        state.player.hasScored(1);
-        state.map.mapArray[posY][posX] = '';
-      }
-    }
+function checkPoints(posY: number, posX: number) {
+  if (state.map.map[posY][posX] === 'points') {
+    state.player.hasScored(1);
+    state.map.map[posY][posX] = '';
+  }
+}
 
-    watch(
-      () => [state.player.posX, state.player.posY],
-      ([newX, newY]) => {
-        state.opponents.forEach((mob) => {
-          mob.findShortestPath(newX, newY)
-        })
-        checkPoints(newY, newX);
-      },
-    );
-
-    onMounted(() => {
-      state.opponents.forEach((mob) => {
-        mob.findShortestPath(state.player.posX, state.player.posY) 
-        mob.enableWalkingToPlayer()
-      })
+watch(
+  () => [state.player.posX, state.player.posY],
+  ([newX, newY]) => {
+    state.opponents.forEach((mob) => {
+      mob.findShortestPath(newX, newY);
     });
-
-    return {
-      state,
-      mapRefs,
-      mapSize,
-      handleKeydownUp,
-      handleKeydownDown,
-      handleKeydownLeft,
-      handleKeydownRight,
-    };
+    checkPoints(newY, newX);
   },
+);
+
+onMounted(() => {
+  state.opponents.forEach((mob) => {
+    mob.findShortestPath(state.player.posX, state.player.posY);
+    mob.enableWalkingToPlayer();
+  });
 });
 </script>
 

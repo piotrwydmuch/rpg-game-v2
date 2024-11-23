@@ -6,7 +6,7 @@ export class Map {
   boulders: number;
   trees: number;
   pointFields: number;
-  mapArray: Array<Array<String>>;
+  map: Array<Array<string>>;
 
   constructor(
     size: number,
@@ -18,7 +18,7 @@ export class Map {
     this.boulders = boulders;
     this.trees = trees;
     this.pointFields = pointFields;
-    this.mapArray = this.generateRandomMap();
+    this.map = this.generateRandomMap();
   }
 
   private generateRandomMap(): string[][] {
@@ -35,9 +35,8 @@ export class Map {
 
     /* boulders generation */
     for (let i = 0; i < this.boulders; i++) {
-      let row, col;
-      row = Math.floor(Math.random() * this.size);
-      col = Math.floor(Math.random() * this.size);
+      const row = Math.floor(Math.random() * this.size);
+      const col = Math.floor(Math.random() * this.size);
 
       if (row === 0 && col === 0) {
         i--;
@@ -49,9 +48,8 @@ export class Map {
 
     /* trees generation */
     for (let i = 0; i < this.trees; i++) {
-      let row, col;
-      row = Math.floor(Math.random() * this.size);
-      col = Math.floor(Math.random() * this.size);
+      const row = Math.floor(Math.random() * this.size);
+      const col = Math.floor(Math.random() * this.size);
 
       if (row === 0 && col === 0) {
         i--;
@@ -63,9 +61,8 @@ export class Map {
 
     /* Points generation */
     for (let i = 0; i < this.pointFields; i++) {
-      let row, col;
-      row = Math.floor(Math.random() * this.size);
-      col = Math.floor(Math.random() * this.size);
+      const row = Math.floor(Math.random() * this.size);
+      const col = Math.floor(Math.random() * this.size);
 
       if (
         (row === 0 && col === 0) ||

@@ -21,7 +21,7 @@ export class Player {
   }
 
   private noBarriers(row: number, col: number) {
-    return !state.map.mapArray[row][col].includes('barrier');
+    return !state.map.map[row][col].includes('barrier');
   }
 
   moveUp() {

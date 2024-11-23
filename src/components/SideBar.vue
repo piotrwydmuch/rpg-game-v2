@@ -14,7 +14,6 @@ import { state } from '@features/store.ts';
 export default defineComponent({
   name: 'SideBar',
   setup() {
-
     function createOpponent() {
       // state.opponent = new Opponent(4, 4);
     }
@@ -24,8 +23,6 @@ export default defineComponent({
       createOpponent,
     };
   },
-
-
 });
 </script>
 
