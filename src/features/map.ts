@@ -7,6 +7,7 @@ export class Map {
   trees: number;
   pointFields: number;
   map: Array<Array<string>>;
+  mapFieldsArray: Array<string[]>;
 
   constructor(
     size: number,
@@ -19,21 +20,20 @@ export class Map {
     this.trees = trees;
     this.pointFields = pointFields;
     this.map = this.generateRandomMap();
+    this.mapFieldsArray = [];
   }
 
-  private generateRandomMap(): string[][] {
-    const mapArray = [];
-
-    /* All fields (grid) generation */
+  private generateMapFields() {
     for (let i = 0; i < this.size; i++) {
       const row: string[] = [];
       for (let j = 0; j < this.size; j++) {
         row.push('');
       }
-      mapArray.push(row);
+      this.mapFieldsArray.push(row);
     }
+  }
 
-    /* boulders generation */
+  private generateBouldersForMap() {
     for (let i = 0; i < this.boulders; i++) {
       const row = Math.floor(Math.random() * this.size);
       const col = Math.floor(Math.random() * this.size);
@@ -42,11 +42,12 @@ export class Map {
         i--;
         continue;
       } else {
-        mapArray[row][col] = `barrier boulder asset-${randomInt(4) + 1}`;
+        this.mapFieldsArray[row][col] = `barrier boulder asset-${randomInt(4) + 1}`;
       }
     }
+  }
 
-    /* trees generation */
+  private generateTreesForMap() {
     for (let i = 0; i < this.trees; i++) {
       const row = Math.floor(Math.random() * this.size);
       const col = Math.floor(Math.random() * this.size);
@@ -55,28 +56,37 @@ export class Map {
         i--;
         continue;
       } else {
-        mapArray[row][col] = `barrier tree asset-${randomInt(4) + 1}`;
+        this.mapFieldsArray[row][col] = `barrier tree asset-${randomInt(4) + 1}`;
       }
     }
+  }
 
-    /* Points generation */
+  private generateLootForMap() {
     for (let i = 0; i < this.pointFields; i++) {
       const row = Math.floor(Math.random() * this.size);
       const col = Math.floor(Math.random() * this.size);
 
       if (
         (row === 0 && col === 0) ||
-        mapArray[row][col].includes('barrier') ||
-        mapArray[row][col].includes('player') ||
-        mapArray[row][col].includes('points')
+        this.mapFieldsArray[row][col].includes('barrier') ||
+        this.mapFieldsArray[row][col].includes('player') ||
+        this.mapFieldsArray[row][col].includes('points')
       ) {
         i--;
         continue;
       } else {
-        mapArray[row][col] = 'points';
+        this.mapFieldsArray[row][col] = 'points';
       }
     }
+  }
 
-    return mapArray;
+  private generateRandomMap(): string[][] {
+    this.mapFieldsArray = []
+    this.generateMapFields()
+    this.generateBouldersForMap()
+    this.generateTreesForMap()
+    this.generateLootForMap()
+
+    return this.mapFieldsArray;
   }
 }
