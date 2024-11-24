@@ -1,63 +1,16 @@
 import { state } from './store';
+import { Character } from './character';
 
-enum Direction {
-  Up = 'UP',
-  Down = 'DOWN',
-  Left = 'LEFT',
-  Right = 'RIGHT',
-}
-
-export class Opponent {
-  posX: number;
-  posY: number;
-  direction: Direction;
+export class Opponent extends Character {
   walkingToPlayerInterval: NodeJS.Timeout | null;
   movesToPlayer: Array<() => void>;
 
   constructor(initialX: number, initialY: number) {
-    this.posX = initialX;
-    this.posY = initialY;
-    this.direction = Direction.Up;
+    super(initialX, initialY);
     this.walkingToPlayerInterval = null;
     this.movesToPlayer = [];
   }
 
-  private noBarriers(row: number, col: number) {
-    const field = state.map.map[row][col];
-    return !field.includes('barrier');
-  }
-
-  moveUp() {
-    const nextPos = this.posY - 1;
-    this.direction = Direction.Up;
-    if (nextPos >= 0 && this.noBarriers(nextPos, this.posX)) {
-      this.posY = nextPos;
-    }
-  }
-
-  moveDown() {
-    const nextPos = this.posY + 1;
-    this.direction = Direction.Down;
-    if (nextPos <= state.map.size - 1 && this.noBarriers(nextPos, this.posX)) {
-      this.posY = nextPos;
-    }
-  }
-
-  moveLeft() {
-    const nextPos = this.posX - 1;
-    this.direction = Direction.Left;
-    if (nextPos >= 0 && this.noBarriers(this.posY, nextPos)) {
-      this.posX = nextPos;
-    }
-  }
-
-  moveRight() {
-    const nextPos = this.posX + 1;
-    this.direction = Direction.Right;
-    if (nextPos <= state.map.size - 1 && this.noBarriers(this.posY, nextPos)) {
-      this.posX = nextPos;
-    }
-  }
 
   enableWalkingToPlayer() {
     /* Random walking when theres no path to player (WIP) */
@@ -116,6 +69,10 @@ export class Opponent {
         { dx: 0, dy: 1, moveFn: this.moveDown.bind(this) },
         { dx: -1, dy: 0, moveFn: this.moveLeft.bind(this) },
         { dx: 1, dy: 0, moveFn: this.moveRight.bind(this) },
+        { dx: -1, dy: -1, moveFn: this.moveUpLeft.bind(this) },
+        { dx: -1, dy: 1, moveFn: this.moveDownLeft.bind(this) },
+        { dx: 1, dy: -1, moveFn: this.moveUpRight.bind(this) },
+        { dx: 1, dy: 1, moveFn: this.moveDownRight.bind(this) },
       ];
 
       for (const move of possibleMoves) {
